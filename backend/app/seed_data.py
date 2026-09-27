@@ -1,11 +1,11 @@
-"""
-List of every dynamic image slot on the site, with the seed file (already
-part of the original site) to copy in on first run, so the site looks
-correct immediately -- the VC can then replace any of them from /admin.
+"""Define the site's editable content and dynamic image slots.
+
+Seed images are copied to the upload directory when the backend initializes,
+so each slot has an initial image before an administrator replaces it.
 """
 
 IMAGE_SLOTS = [
-    # slot_key, label, page, alt_text, seed_filename (must exist in seed_images/)
+    # Fields: slot key, label, page, alt text, and seed filename in seed_images/.
     ("home-hero-education", "Homepage hero photo 1 (education)", "Home", "Education programme", "hero-education.jpg"),
     ("home-hero-health", "Homepage hero photo 2 (health)", "Home", "Health programme", "hero-health.jpg"),
     ("home-hero-livelihoods", "Homepage hero photo 3 (livelihoods)", "Home", "Livelihoods programme", "hero-livelihoods.jpg"),
@@ -51,8 +51,7 @@ IMAGE_SLOTS = [
     ("work-livelihoods", "Work page: Women's livelihoods", "Work", "Women's livelihoods programme", "hero-livelihoods.jpg"),
     ("work-solar", "Work page: Solar housing & clean energy", "Work", "Solar housing programme", "hero-solar.jpg"),
 
-    # Full gallery page -- add more rows here any time; the admin panel
-    # picks up new slots automatically after a backend restart.
+    # Add gallery entries here; the admin panel discovers them after restart.
     ("gallery-kalam", "Dr A.P.J. Abdul Kalam", "Gallery", "Courtesy meeting with Dr A.P.J. Abdul Kalam, 11th President of India", "meeting-president-kalam.jpg"),
     ("gallery-patil", "Smt. Pratibha Devisingh Patil", "Gallery", "Courtesy meeting with Smt. Pratibha Devisingh Patil, 12th President of India", "meeting-president-patil.jpg"),
     ("gallery-mukherjee", "Shri Pranab Mukherjee", "Gallery", "Courtesy meeting with Shri Pranab Mukherjee, 13th President of India", "meeting-president-mukherjee.jpg"),

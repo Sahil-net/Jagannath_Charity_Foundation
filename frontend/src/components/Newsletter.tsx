@@ -1,5 +1,8 @@
 import { useState, FormEvent } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { submissionPayload, submitForm } from "../lib/api";
+import DataCollectionNotice from "./DataCollectionNotice";
 import Reveal from "./Reveal";
 
 export default function Newsletter() {
@@ -8,6 +11,7 @@ export default function Newsletter() {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+  const reducedMotion = useReducedMotion();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,17 +30,24 @@ export default function Newsletter() {
   return (
     <Reveal as="section" className="newsletter-section bg-navy-900 text-white">
       <div className="wrap py-14 grid gap-8 lg:grid-cols-2 items-center">
-        <div>
-          <p className="text-orange-300 text-sm font-semibold mb-2">Stay informed</p>
-          <h2 className="text-2xl sm:text-3xl font-serif-heading font-bold mb-2">
-            Programme notes, not slogans.
+        <div className="newsletter-copy">
+          <p className="newsletter-eyebrow">Stay informed</p>
+          <h2 className="newsletter-title">
+            Programme notes,<br /><em>not slogans.</em>
           </h2>
-          <p className="text-white/70">
+          <p className="newsletter-description">
             Occasional updates on classrooms, camps, skills and household energy.
             You can withdraw consent at any time.
           </p>
         </div>
-        <form onSubmit={handleSubmit} className="bg-white text-navy-950 rounded-xl p-6 space-y-4">
+        <motion.form
+          onSubmit={handleSubmit}
+          className="bg-white text-navy-950 rounded-xl p-6 space-y-4"
+          initial={reducedMotion ? false : { opacity: 0, x: 52 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: reducedMotion ? 0 : 1.1, delay: reducedMotion ? 0 : 0.18, ease: [0.22, 0.7, 0.2, 1] }}
+        >
           {submitted ? (
             <p className="form-success text-sm" role="status">Your update request is saved. Programme emails are not sent automatically yet.</p>
           ) : (
@@ -58,6 +69,10 @@ export default function Newsletter() {
                 />
               </div>
               <div className="form-honeypot" aria-hidden="true"><label htmlFor="news-website">Leave this field blank</label><input id="news-website" name="website" tabIndex={-1} autoComplete="off" /></div>
+              <details className="newsletter-privacy-notice" open onToggle={() => window.requestAnimationFrame(() => ScrollTrigger.refresh())}>
+                <summary>Data collection and consent notice</summary>
+                <DataCollectionNotice showPolicyLink />
+              </details>
               <label className="flex gap-2 text-xs text-navy-900/70">
                 <input
                   name="consent"
@@ -82,7 +97,7 @@ export default function Newsletter() {
               </button>
             </>
           )}
-        </form>
+        </motion.form>
       </div>
     </Reveal>
   );

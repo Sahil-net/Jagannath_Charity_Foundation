@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Layout from "../components/Layout";
+import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import { DynamicImage } from "../lib/ImagesContext";
 import { useImages } from "../lib/ImagesContext";
@@ -8,10 +9,13 @@ import { useImages } from "../lib/ImagesContext";
 const trustBoard = [
   { slot: "team-jagannath-patnaik", role: "Founder, Settlor & Managing Trustee", name: "Dr Jagannath Patnaik, MBA, M.Law, Ph.D., D.Litt., D.Sc.",
     body: "Vice Chancellor, The ICFAI University Sikkim. Served as Vice Chancellor of Indian universities for over 16 years and a renowned educationist and author. Holds the Foundation's direction across education, health, youth skills, women's livelihoods and household energy. Recorded in the World Book of Records and recipient of the Utkal Jyoti Award of the Government for social service." },
+
   { slot: "team-shrabani-patnaik", role: "Founder Trustee and Vice President", name: "Dr Shrabani Patnaik, M.Sc., M.Phil., Ph.D., D.Litt.",
     body: "M.Sc. Environment, M.Phil. Environment. National Co-Chairman, UNAccc. National President, Women Empowerment Forum. Director, Global Chamber of Consumer Rights, India. Former Secretary, FICCI-FLO Bhubaneswar." },
+
   { slot: "team-prakriti-patnaik", role: "Founder Trustee and Treasurer", name: "Adv. Prakriti Patnaik, Ph.D. Scholar, LL.M. (India), LL.M. (Queen Mary, UK), BBA-LL.B. (Hons.)",
     body: "Empaneled Lawyer, YES Bank Ltd. Practising advocate in Bhubaneswar and Cuttack before the High Court, District Courts, Consumer Redressal Forums, Real Estate Regulatory Forum and DRT." },
+
   { slot: "team-purushraj-patnaik", role: "Founder Trustee and Secretary", name: "Mr Purushraj Patnaik, BBA-LL.B., LL.M.",
     body: "Experience in policy advocacy and cyber law. Supports field follow-up, youth programmes and the longer association of members with the trust." },
 ];
@@ -113,35 +117,24 @@ export default function Team() {
 
   return (
     <Layout>
-      <Reveal as="section" className="page-banner">
-        <div className="wrap">
-          <p className="text-orange-300 font-semibold mb-2">Key leadership</p>
-          <h1 className="text-3xl sm:text-4xl font-serif-heading font-bold max-w-2xl">
-            Who holds the trust, and who tests the work.
-          </h1>
-          <p className="mt-4 max-w-2xl text-white/70">
-            The settlor and managing trustee, the founder trustees, the Board of Management and the
-            Board of Advisors govern the Foundation with clear policy and strategic planning.
-          </p>
-        </div>
-      </Reveal>
+      <PageHero theme="team" eyebrow="Key leadership" title="Who holds the trust, and who tests the work." description="The settlor and managing trustee, the founder trustees, the Board of Management and the Board of Advisors govern the Foundation with clear policy and strategic planning." />
 
       <Reveal as="section" className="wrap py-16">
-        <h2 className="text-2xl font-serif-heading font-bold text-navy-950 mb-8">Trust board</h2>
+        <h2 className="team-section-heading">Board of Trustees</h2>
         <div className="team-profile-grid team-profile-grid-trust">
           {renderPeople(trustBoard)}
         </div>
       </Reveal>
 
       <Reveal as="section" className="wrap pb-16">
-        <h2 className="text-2xl font-serif-heading font-bold text-navy-950 mb-8">Board of management</h2>
+        <h2 className="team-section-heading">Board of Management</h2>
         <div className="team-profile-grid team-profile-grid-management">
           {renderPeople(boardOfManagement)}
         </div>
       </Reveal>
 
       <Reveal as="section" className="wrap pb-16">
-        <h2 className="text-2xl font-serif-heading font-bold text-navy-950 mb-8">Board of advisors</h2>
+        <h2 className="team-section-heading">Board of Advisors</h2>
         <div className="team-profile-grid team-profile-grid-advisors">
           {renderPeople(advisors.map((advisor) => ({ ...advisor, body: advisor.note })))}
         </div>
@@ -149,13 +142,13 @@ export default function Team() {
 
       <AnimatePresence>
         {selectedPerson && (
-          <motion.div className="team-profile-backdrop" role="presentation" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reducedMotion ? 0 : 0.28 }} onMouseDown={(event) => { if (event.target === event.currentTarget) setSelectedPerson(null); }}>
-            <motion.aside className="team-profile-panel" role="dialog" aria-modal="true" aria-labelledby="team-profile-name" initial={reducedMotion ? false : { x: "100%" }} animate={{ x: 0 }} exit={reducedMotion ? undefined : { x: "100%" }} transition={{ duration: reducedMotion ? 0 : 0.48, ease: [0.22, 0.7, 0.2, 1] }}>
+          <motion.div className="team-profile-backdrop" role="presentation" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reducedMotion ? 0 : 0.42 }} onMouseDown={(event) => { if (event.target === event.currentTarget) setSelectedPerson(null); }}>
+            <motion.aside className="team-profile-panel" role="dialog" aria-modal="true" aria-labelledby="team-profile-name" initial={reducedMotion ? false : { x: "100%" }} animate={{ x: 0 }} exit={reducedMotion ? undefined : { x: "100%" }} transition={{ duration: reducedMotion ? 0 : 0.78, ease: [0.22, 0.7, 0.2, 1] }}>
               <button ref={closeButtonRef} type="button" className="team-profile-close" aria-label="Close profile" onClick={() => setSelectedPerson(null)}>×</button>
               <div className="team-profile-background">
                 {showSelectedPhoto ? <DynamicImage slotKey={selectedPerson.slot} alt={selectedPerson.name} /> : <div className="team-profile-placeholder" aria-label={`Portrait for ${selectedPerson.name} has not been added`}><span>{initials(selectedPerson.name)}</span></div>}
                 <div className="team-profile-image-shade" />
-                <motion.div className="team-profile-panel-copy" initial={reducedMotion ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reducedMotion ? 0 : 0.48, delay: reducedMotion ? 0 : 0.2, ease: [0.22, 0.7, 0.2, 1] }}>
+                <motion.div className="team-profile-panel-copy" initial={reducedMotion ? false : { opacity: 0, y: 18, scale: 0.985 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: reducedMotion ? 0 : 0.62, delay: reducedMotion ? 0 : 0.88, ease: [0.22, 0.7, 0.2, 1] }}>
                   <p className="eyebrow"><span />{selectedPerson.role}</p>
                   <h2 id="team-profile-name">{selectedPerson.name}</h2>
                   <div className="team-profile-rule" />

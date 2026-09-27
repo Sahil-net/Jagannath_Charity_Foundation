@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 import Layout from "../components/Layout";
+import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import { submissionPayload, submitForm } from "../lib/api";
 
@@ -25,18 +26,7 @@ export default function Contact() {
 
   return (
     <Layout hideNewsletter>
-      <Reveal as="section" className="page-banner">
-        <div className="wrap">
-          <p className="text-orange-300 font-semibold mb-2">Contact</p>
-          <h1 className="text-3xl sm:text-4xl font-serif-heading font-bold max-w-2xl">
-            Trust headquarters, Bhubaneswar.
-          </h1>
-          <p className="mt-4 max-w-2xl text-white/70">
-            Programme questions, volunteering, membership and press all come to the same desk. If
-            it is urgent, call. If it can wait, use the form.
-          </p>
-        </div>
-      </Reveal>
+      <PageHero theme="contact" eyebrow="Contact" title="Trust headquarters, Bhubaneswar." description="Programme questions, volunteering, membership and press all come to the same desk. If it is urgent, call. If it can wait, use the form." />
 
       <Reveal as="section" className="wrap py-16 grid lg:grid-cols-2 gap-12">
         <dl className="space-y-5 text-sm">

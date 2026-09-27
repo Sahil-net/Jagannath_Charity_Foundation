@@ -1,21 +1,12 @@
-import { createElement, HTMLAttributes, useEffect } from "react";
-import { motion, useAnimate, useInView, useReducedMotion } from "motion/react";
+import { createElement, HTMLAttributes, useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotion } from "motion/react";
 
-const motionTags = {
-  div: motion.div,
-  section: motion.section,
-  article: motion.article,
-  h3: motion.h3,
-  h2: motion.h2,
-  aside: motion.aside,
-  nav: motion.nav,
-  address: motion.address,
-  form: motion.form,
-  button: motion.button,
-  a: motion.a,
-};
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-type RevealTag = keyof typeof motionTags;
+type RevealTag = "div" | "section" | "article" | "h3" | "h2" | "aside" | "nav" | "address" | "form" | "button" | "a";
 type RevealProps = HTMLAttributes<any> & {
   as?: RevealTag;
   delay?: number;
@@ -24,19 +15,32 @@ type RevealProps = HTMLAttributes<any> & {
 };
 
 export default function Reveal({ as = "div", delay = 0, ...props }: RevealProps) {
-  const [scope, animate] = useAnimate();
-  const inView = useInView(scope, { once: true, amount: 0.12, margin: "0px 0px -40px 0px" });
+  const scope = useRef<HTMLElement | null>(null);
   const reducedMotion = useReducedMotion();
 
-  useEffect(() => {
-    if (!inView || reducedMotion || !scope.current) return;
-    void animate(scope.current, { opacity: [0.58, 1], y: [28, 0] }, {
-      duration: 1.1,
-      delay: delay + 0.1,
-      ease: [0.22, 0.7, 0.2, 1],
-    });
-  }, [animate, delay, inView, reducedMotion, scope]);
+  useGSAP(() => {
+    const element = scope.current;
+    if (!element) return;
 
-  const MotionTag = motionTags[as] as React.ElementType;
-  return createElement(MotionTag, { ...props, ref: scope });
+    if (reducedMotion) {
+      gsap.set(element, { autoAlpha: 1, y: 0 });
+      return;
+    }
+
+    gsap.fromTo(element, { autoAlpha: 0, y: 24 }, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 1.6,
+      delay: delay + 0.18,
+      ease: "power3.out",
+      overwrite: "auto",
+      scrollTrigger: {
+        trigger: element,
+        start: "top 86%",
+        once: true,
+      },
+    });
+  }, { scope, dependencies: [delay, reducedMotion], revertOnUpdate: true });
+
+  return createElement(as, { ...props, ref: scope });
 }

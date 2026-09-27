@@ -1,4 +1,5 @@
 import Layout from "../components/Layout";
+import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 
 const stats = [
@@ -11,18 +12,7 @@ const stats = [
 export default function Impact() {
   return (
     <Layout>
-      <Reveal as="section" className="page-banner">
-        <div className="wrap">
-          <p className="text-orange-300 font-semibold mb-2">Impact</p>
-          <h1 className="text-3xl sm:text-4xl font-serif-heading font-bold max-w-2xl">
-            We measure what a household still has next year.
-          </h1>
-          <p className="mt-4 max-w-2xl text-white/70">
-            The Foundation is young. We will not invent a wall of beneficiaries. We will name the
-            problem in the country plainly, and the philosophy we work by.
-          </p>
-        </div>
-      </Reveal>
+      <PageHero theme="impact" eyebrow="Impact" title="We measure what a household still has next year." description="The Foundation is young. We will not invent a wall of beneficiaries. We will name the problem in the country plainly, and the philosophy we work by." />
 
       <Reveal as="section" className="wrap py-16">
         <h2 className="text-2xl font-serif-heading font-bold text-navy-950 max-w-2xl">

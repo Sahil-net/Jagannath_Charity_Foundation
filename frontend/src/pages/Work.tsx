@@ -1,4 +1,5 @@
 import Layout from "../components/Layout";
+import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import { DynamicImage } from "../lib/ImagesContext";
 
@@ -20,18 +21,7 @@ const programmes = [
 export default function Work() {
   return (
     <Layout>
-      <Reveal as="section" className="page-banner">
-        <div className="wrap">
-          <p className="text-orange-300 font-semibold mb-2">Focus areas</p>
-          <h1 className="text-3xl sm:text-4xl font-serif-heading font-bold max-w-2xl">
-            Six programmes, nationwide, no theatre.
-          </h1>
-          <p className="mt-4 max-w-2xl text-white/70">
-            Each line of work is designed to leave something a household can still use a year
-            later: a skill, a saving, a school habit, a cleaner bill.
-          </p>
-        </div>
-      </Reveal>
+      <PageHero theme="work" eyebrow="Focus areas" title="Six programmes, nationwide, no theatre." description="Each line of work is designed to leave something a household can still use a year later: a skill, a saving, a school habit, a cleaner bill." />
 
       <section className="wrap py-16 grid sm:grid-cols-2 gap-8">
         {programmes.map((p) => (

@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Layout from "../components/Layout";
+import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import { DynamicImage } from "../lib/ImagesContext";
 import { useSiteContent } from "../lib/SiteContentContext";
@@ -20,13 +21,43 @@ const tabs = [
   },
   {
     id: "approach", label: "Our approach", title: "Four disciplines",
-    body: "Dignity first — people we work with are partners, not recipients of a spectacle. Evidence over theatre — we design for what a family can still feel twelve months later. Communities first — we work with existing schools, health workers, self-help groups and panchayats. Women at the centre — household energy, savings, nutrition and children's schooling move when women have information, income and a seat at the table.",
+    body: "Four practical disciplines guide how we work with communities and partners.",
   },
   {
     id: "dream", label: "The founder's dream", title: "Dr Jagannath Patnaik, MBA, M.Law, Ph.D., D.Litt., D.Sc.",
     body: "I did not first meet social service in a conference hall. I met it as a child, in the ordinary work of standing with people who had less than they needed. Those early days taught me a sentence that has never left me: Manav seva is Ishwar seva — service to the human being is service to God. Not as a slogan, but as a discipline. Vice Chancellor, The ICFAI University Sikkim. He has served as Vice Chancellor of Indian universities for over 16 years and is a renowned educationist and author. Recorded in the World Book of Records and recipient of the Utkal Jyoti Award of the Government for social service. On 17 August 2026 he settled Jagannath Foundation as an irrevocable public charitable trust so that classrooms, health camps, skills and household energy could be held for public benefit alone — across the country, without private profit.",
   },
 ];
+
+const disciplines = [
+  { title: "Dignity first", body: "People we work with are partners, never recipients of a spectacle." },
+  { title: "Evidence over theatre", body: "We design for what a family can still feel useful twelve months later." },
+  { title: "Communities first", body: "We work with existing schools, health workers, self-help groups and panchayats." },
+  { title: "Women at the centre", body: "Information, income and a seat at the table help strengthen energy, savings, nutrition and children's schooling." },
+];
+
+function TypewriterText({ text, reducedMotion }: { text: string; reducedMotion: boolean }) {
+  const [visibleText, setVisibleText] = useState(reducedMotion ? text : "");
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setVisibleText(text);
+      return;
+    }
+
+    setVisibleText("");
+    let position = 0;
+    const timer = window.setInterval(() => {
+      position = Math.min(position + 2, text.length);
+      setVisibleText(text.slice(0, position));
+      if (position >= text.length) window.clearInterval(timer);
+    }, 24);
+
+    return () => window.clearInterval(timer);
+  }, [text, reducedMotion]);
+
+  return <p className="founder-dream-text"><span className="sr-only">{text}</span><span aria-hidden="true">{visibleText}{!reducedMotion && visibleText.length < text.length && <span className="typewriter-caret">▍</span>}</span></p>;
+}
 
 export default function About() {
   const siteContent = useSiteContent();
@@ -36,20 +67,15 @@ export default function About() {
 
   return (
     <Layout>
-      <Reveal as="section" className="page-banner">
-        <div className="wrap">
-          <p className="text-orange-300 font-semibold mb-2">About the Foundation</p>
-          <h1 className="text-3xl sm:text-4xl font-serif-heading font-bold max-w-2xl">
-            {siteContent.about_heading?.value || "Helping hands. Positive living. A trust held for the people."}
-          </h1>
-          <p className="mt-4 max-w-2xl text-white/70">
-            {siteContent.about_intro?.value || "Jagannath Foundation was created on 17 August 2026. It is irrevocable. Its income and property can be applied only to the objects of the trust. There is no private profit."}
-          </p>
-        </div>
-      </Reveal>
+      <PageHero
+        theme="about"
+        eyebrow="About the Foundation"
+        title={siteContent.about_heading?.value || "Helping hands. Positive living. A trust held for the people."}
+        description={siteContent.about_intro?.value || "Jagannath Foundation was created on 17 August 2026. It is irrevocable. Its income and property can be applied only to the objects of the trust. There is no private profit."}
+      />
 
-      <Reveal as="section" className="wrap py-16 grid lg:grid-cols-[2fr_1fr] gap-10">
-        <div>
+      <Reveal as="section" className="about-content wrap py-16 grid lg:grid-cols-[2fr_1fr] gap-10">
+        <div className="about-information">
           <div className="about-tabs flex flex-wrap gap-2 mb-6" role="tablist" aria-label="About the Foundation">
             {tabs.map((t) => (
               <button
@@ -59,7 +85,7 @@ export default function About() {
                 aria-selected={active === t.id}
                 aria-controls="about-tab-panel"
                 onClick={() => setActive(t.id)}
-                className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
+                className={`about-tab-button px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
                   active === t.id
                     ? "bg-orange-500 border-orange-500 text-white"
                     : "border-navy-900/20 text-navy-900/70 hover:border-orange-500"
@@ -69,19 +95,71 @@ export default function About() {
               </button>
             ))}
           </div>
-          <motion.div className="about-tab-panel" key={current.id} id="about-tab-panel" role="tabpanel" aria-live="polite" initial={{ opacity: 0, y: reducedMotion ? 0 : 7 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reducedMotion ? 0 : 0.38, ease: "easeOut" }}>
-            <h3 className="text-xl font-serif-heading font-bold text-navy-950 mb-2">{current.title}</h3>
-            <p className="text-navy-900/70 leading-relaxed">{current.body}</p>
+          <motion.div className="about-tab-panel" key={current.id} id="about-tab-panel" role="tabpanel" aria-live={current.id === "dream" ? "off" : "polite"} initial={{ opacity: 0, y: reducedMotion ? 0 : 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reducedMotion ? 0 : 0.82, ease: [0.22, 0.7, 0.2, 1] }}>
+            <h3>{current.id === "dream" ? "A lifelong conviction" : current.title}</h3>
+            {current.id === "approach" ? (
+              <div className="discipline-grid">
+                {disciplines.map((discipline, index) => (
+                  <motion.article key={discipline.title} initial={reducedMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reducedMotion ? 0 : 0.7, delay: reducedMotion ? 0 : 0.12 + index * 0.12 }}>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <h4>{discipline.title}</h4>
+                    <p>{discipline.body}</p>
+                  </motion.article>
+                ))}
+              </div>
+            ) : (
+              <p>{current.id === "dream" ? "The founder's early experience of standing alongside people shaped a belief that service to people is service to God—and the purpose behind this Foundation." : current.body}</p>
+            )}
           </motion.div>
         </div>
-        <aside className="space-y-4">
+        <aside className="about-founder-column">
+          <motion.div
+            className="about-founder-visual"
+            initial={reducedMotion ? false : { opacity: 0, scale: 0.975 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: reducedMotion ? 0 : 1.15, delay: reducedMotion ? 0 : 0.15, ease: [0.22, 0.7, 0.2, 1] }}
+          >
           <DynamicImage
             slotKey="about-founder-photo"
-            className="w-full rounded-xl object-cover aspect-[4/5]"
+            alt="Dr Jagannath Patnaik, founder of Jagannath Foundation"
+            className="about-founder-image"
           />
+            <motion.svg className="about-founder-frame" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <motion.path
+                d="M50 1 H99 V99 H1 V1 H50"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+                initial={reducedMotion ? false : { pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: reducedMotion ? 0 : 1.5, delay: reducedMotion ? 0 : 1.45, ease: [0.22, 0.7, 0.2, 1] }}
+              />
+            </motion.svg>
+            <AnimatePresence>
+              {active === "dream" && (
+                <motion.div
+                  className="founder-dream-overlay"
+                  key="founder-dream-overlay"
+                  initial={reducedMotion ? false : { opacity: 0, y: 22, scale: 0.985 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={reducedMotion ? undefined : { opacity: 0, y: 14, scale: 0.99 }}
+                  transition={{ duration: reducedMotion ? 0 : 0.78, ease: [0.22, 0.7, 0.2, 1] }}
+                >
+                  <p className="founder-dream-kicker">The founder's dream</p>
+                  <h3>{tabs.find((tab) => tab.id === "dream")!.title}</h3>
+                  <TypewriterText text={tabs.find((tab) => tab.id === "dream")!.body} reducedMotion={Boolean(reducedMotion)} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
           <a
             href="/assets/organization-profile.pdf"
-            className="block text-center border border-navy-900/20 rounded-full py-2 text-sm font-medium hover:border-orange-500"
+            className="about-profile-download"
           >
             Download Organisation Profile (PDF)
           </a>

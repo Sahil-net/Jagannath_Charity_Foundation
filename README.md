@@ -156,6 +156,20 @@ npm run dev
 Open `http://localhost:5173` for the public website and
 `http://localhost:5173/admin/login` for the administrator sign-in.
 
+### Add or restore a managed image
+
+1. Put the original image in `backend/seed_images/`.
+2. Add or update its slot in `backend/app/seed_data.py`, using the exact seed
+   filename. The slot key must match the key requested by the frontend.
+3. Restart or redeploy the backend. It copies the seed into `backend/uploads/`
+   and updates the matching `image_slots` row in MySQL.
+
+The database stores the slot and file path, not the image bytes. A valid image
+uploaded through the admin dashboard takes precedence over its seed image. If
+an uploaded file is missing after deployment, the backend restores that slot
+from its seed when one is available. Keep `backend/uploads/` on persistent
+storage in production so administrator uploads survive restarts.
+
 ---
 
 ## Configuration

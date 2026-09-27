@@ -33,14 +33,16 @@ def ensure_image_slots(db: Session):
         existing = db.query(ImageSlot).filter(ImageSlot.slot_key == slot_key).first()
         seed_path = SEED_IMAGES_DIR / seed_filename
         if existing:
-            if (
-                slot_key in {"about-founder-photo", "team-jagannath-patnaik", "gallery-cover"}
-                and existing.file_path in {f"{slot_key}{seed_path.suffix.lower()}", "placeholder.jpg"}
-                and seed_path.exists()
-            ):
-                dest_filename = f"{slot_key}{seed_path.suffix.lower()}"
-                shutil.copy(seed_path, UPLOAD_DIR / dest_filename)
-                existing.file_path = dest_filename
+            expected_filename = f"{slot_key}{seed_path.suffix.lower()}"
+            current_upload = UPLOAD_DIR / existing.file_path
+            is_seeded_slot = existing.file_path in {expected_filename, "placeholder.jpg"}
+            upload_is_missing = not current_upload.is_file()
+
+            # Restore a seed image for placeholders, seeded slots, and uploads
+            # missing from a fresh deployment. Keep valid administrator uploads.
+            if seed_path.is_file() and (is_seeded_slot or upload_is_missing):
+                shutil.copy(seed_path, UPLOAD_DIR / expected_filename)
+                existing.file_path = expected_filename
             continue
 
         dest_filename = f"{slot_key}{seed_path.suffix.lower()}"
@@ -49,7 +51,7 @@ def ensure_image_slots(db: Session):
         if seed_path.exists():
             shutil.copy(seed_path, dest_path)
         else:
-            # No seed file bundled -- slot is created empty; admin uploads later
+            # Create the slot without an image; an administrator can upload one.
             dest_filename = "placeholder.jpg"
 
         db.add(ImageSlot(
@@ -60,7 +62,6 @@ def ensure_image_slots(db: Session):
             file_path=dest_filename,
         ))
     db.commit()
-    print(f"[startup] Ensured {len(IMAGE_SLOTS)} image slots exist")
 
 
 def ensure_site_content(db: Session):

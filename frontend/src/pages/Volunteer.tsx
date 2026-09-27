@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 import Layout from "../components/Layout";
+import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import { submissionPayload, submitForm } from "../lib/api";
 
@@ -25,18 +26,7 @@ export default function Volunteer() {
 
   return (
     <Layout hideNewsletter>
-      <Reveal as="section" className="page-banner">
-        <div className="wrap">
-          <p className="text-orange-300 font-semibold mb-2">Get involved</p>
-          <h1 className="text-3xl sm:text-4xl font-serif-heading font-bold max-w-2xl">
-            If you will return, there is a place for you.
-          </h1>
-          <p className="mt-4 max-w-2xl text-white/70">
-            We need people who can sit in a classroom, keep a register, plant a line of trees, or
-            brief a household on a solar roof — and come back the following month.
-          </p>
-        </div>
-      </Reveal>
+      <PageHero theme="volunteer" eyebrow="Get involved" title="If you will return, there is a place for you." description="We need people who can sit in a classroom, keep a register, plant a line of trees, or brief a household on a solar roof — and come back the following month." />
 
       <Reveal as="section" className="wrap py-16 grid lg:grid-cols-2 gap-12">
         <div className="space-y-8">

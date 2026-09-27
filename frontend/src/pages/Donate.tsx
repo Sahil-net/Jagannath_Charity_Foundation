@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 import Layout from "../components/Layout";
+import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import { submissionPayload, submitForm } from "../lib/api";
 
@@ -30,18 +31,7 @@ export default function Donate() {
 
   return (
     <Layout hideNewsletter>
-      <Reveal as="section" className="page-banner">
-        <div className="wrap">
-          <p className="text-orange-300 font-semibold mb-2">Donate</p>
-          <h1 className="text-3xl sm:text-4xl font-serif-heading font-bold max-w-2xl">
-            Give to a named cause, not a vague fund.
-          </h1>
-          <p className="mt-4 max-w-2xl text-white/70">
-            Transfer to the Foundation's Yes Bank savings account, or record a pledge. Income can
-            be applied only to the objects of the trust.
-          </p>
-        </div>
-      </Reveal>
+      <PageHero theme="donate" eyebrow="Donate" title="Give to a named cause, not a vague fund." description="Transfer to the Foundation's Yes Bank savings account, or record a pledge. Income can be applied only to the objects of the trust." />
 
       <Reveal as="section" className="wrap py-16 grid lg:grid-cols-2 gap-12">
         <div>
