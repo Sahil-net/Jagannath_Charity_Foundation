@@ -915,6 +915,40 @@ h1, h2, h3, .font-serif-heading { font-family: var(--font-serif); }
 }
 @media (max-width: 640px) {
 }
+@media (max-width: 680px) {
+  .site-shell { font-size: 16px; line-height: 1.65; }
+  .site-shell .text-sm { font-size: 15px; line-height: 1.6; }
+  .site-shell .text-xs { font-size: 13px; line-height: 1.5; }
+
+  .menu-toggle span { font-size: 12px; }
+  .main-nav > a:not(.nav-donate) { min-height: 48px; font-size: 16px; }
+  .nav-donate { min-height: 48px; font-size: 15px; }
+  .eyebrow { font-size: 11px; }
+  .hero-lede { font-size: 16px; line-height: 1.65; }
+  .hero-action-tooltip { font-size: 12px; }
+  .hero-bottom { font-size: 9px; }
+  .values-inner > span { font-size: 12px; }
+  .values-inner > a { font-size: 13px; }
+  .facts-note, .section-topline > p, .gallery-heading > div > p:last-child,
+  .note-inner > div > p:last-child, .work-text p, .discipline-grid p { font-size: 15px; }
+  .fact-item span { font-size: 14px; }
+  .work-text > span { font-size: 12px; }
+  .about-tab-button { min-height: 46px; font-size: 14px; }
+  .about-tab-panel > p, .founder-dream-text { font-size: 15px; }
+  .gallery-hero-copy > p:not(.eyebrow), .page-hero-copy > p:not(.eyebrow) { font-size: 15px; }
+  .gallery-hero-caption { font-size: 9px; }
+  .gallery-filters button { min-height: 44px; padding-inline: 12px; font-size: 12px; }
+  .gallery-search input { min-height: 44px; font-size: 16px; }
+  .gallery-results { font-size: 13px; }
+  .gallery-tile-caption i { font-size: 9px; }
+  .team-profile-role { font-size: 11px; line-height: 1.45; }
+
+  input, textarea, select { font-size: 16px !important; line-height: 1.45; }
+  .site-shell form button, .admin-upload, .admin-save, .admin-tab,
+  .inbox-export, .inbox-actions select { min-height: 44px; font-size: 14px; }
+  .site-shell form input, .site-shell form select { min-height: 48px; padding-block: 10px; }
+  .site-shell form textarea { min-height: 112px; padding-block: 10px; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .hero-scene-image { transform: none !important; }

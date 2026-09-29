@@ -5,8 +5,13 @@ backend/app/__pycache__/
 backend/app/routers/__pycache__/
 *.pyc
 backend/app.db
+backend/app.db-*
 backend/.env
 backend/ca.pem
+backend/v_env/
+backend/venv/
+backend/.pytest_cache/
+backend/.ruff_cache/
 
 # Uploaded images are user content, not source code -- don't version them.
 backend/uploads/*
@@ -16,6 +21,10 @@ backend/uploads/*
 frontend/node_modules/
 frontend/dist/
 frontend/.env
+frontend/.env.*
+!frontend/.env.example
+backend/.env.*
+!backend/.env.example
 Jagannath-Foundation-Website.zip
 
 # --- OS junk ---

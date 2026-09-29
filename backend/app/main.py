@@ -8,7 +8,7 @@ from sqlalchemy import inspect, text
 from app.config import settings
 from app.database import Base, engine, SessionLocal
 from app.routers import auth, images, content, submissions
-from app.startup import ensure_admin_user, ensure_image_slots, ensure_site_content
+from app.startup import ensure_image_slots, ensure_site_content
 
 Base.metadata.create_all(bind=engine)
 
@@ -24,9 +24,24 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origin_list,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
 )
+
+
+@app.middleware("http")
+async def add_security_headers(request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    if request.url.path.startswith("/api/auth"):
+        response.headers["Cache-Control"] = "no-store"
+    if settings.environment.lower() == "production":
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    return response
+
 
 UPLOAD_DIR = Path(__file__).resolve().parent.parent / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
@@ -42,7 +57,6 @@ app.include_router(submissions.router)
 def on_startup():
     db = SessionLocal()
     try:
-        ensure_admin_user(db)
         ensure_image_slots(db)
         ensure_site_content(db)
     finally:

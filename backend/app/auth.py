@@ -12,6 +12,7 @@ from app.models import AdminUser
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
+_DUMMY_PASSWORD_HASH = pwd_context.hash("not-a-real-user-password")
 
 
 def verify_password(plain: str, hashed: str) -> bool:
@@ -19,6 +20,8 @@ def verify_password(plain: str, hashed: str) -> bool:
 
 
 def hash_password(plain: str) -> str:
+    if len(plain.encode("utf-8")) > 72:
+        raise ValueError("Password must be at most 72 bytes")
     return pwd_context.hash(plain)
 
 

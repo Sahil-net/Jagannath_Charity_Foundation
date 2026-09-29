@@ -18,6 +18,13 @@ IMAGE_SLOT_KEYS = {item[0] for item in IMAGE_SLOTS}
 
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
 MAX_FILE_SIZE = 8 * 1024 * 1024  # 8 MB
+IMAGE_SIGNATURES = {
+    ".jpg": lambda data: data.startswith(b"\xff\xd8\xff"),
+    ".jpeg": lambda data: data.startswith(b"\xff\xd8\xff"),
+    ".png": lambda data: data.startswith(b"\x89PNG\r\n\x1a\n"),
+    ".gif": lambda data: data.startswith((b"GIF87a", b"GIF89a")),
+    ".webp": lambda data: len(data) >= 12 and data[:4] == b"RIFF" and data[8:12] == b"WEBP",
+}
 
 
 def slot_to_out(slot: ImageSlot) -> ImageSlotOut:
@@ -68,15 +75,22 @@ async def replace_image(
     if ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(status_code=400, detail="Only jpg, jpeg, png, webp or gif files are allowed")
 
-    contents = await file.read()
+    contents = await file.read(MAX_FILE_SIZE + 1)
+    await file.close()
     if len(contents) > MAX_FILE_SIZE:
-        raise HTTPException(status_code=400, detail="File too large (max 8MB)")
+        raise HTTPException(status_code=413, detail="File too large (max 8MB)")
+    if not contents or not IMAGE_SIGNATURES[ext](contents):
+        raise HTTPException(status_code=400, detail="File contents do not match the selected image type")
 
     new_filename = f"{slot_key}-{uuid.uuid4().hex[:8]}{ext}"
-    with open(UPLOAD_DIR / new_filename, "wb") as f:
-        f.write(contents)
-
-    slot.file_path = new_filename
-    db.commit()
-    db.refresh(slot)
+    new_path = UPLOAD_DIR / new_filename
+    try:
+        new_path.write_bytes(contents)
+        slot.file_path = new_filename
+        db.commit()
+        db.refresh(slot)
+    except Exception:
+        db.rollback()
+        new_path.unlink(missing_ok=True)
+        raise
     return slot_to_out(slot)

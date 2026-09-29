@@ -3,28 +3,12 @@ from pathlib import Path
 
 from sqlalchemy.orm import Session
 
-from app.auth import hash_password
-from app.config import settings
-from app.models import AdminUser, ImageSlot, SiteContent
+from app.models import ImageSlot, SiteContent
 from app.seed_data import IMAGE_SLOTS, SITE_CONTENT
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SEED_IMAGES_DIR = BASE_DIR / "seed_images"
 UPLOAD_DIR = BASE_DIR / "uploads"
-
-
-def ensure_admin_user(db: Session):
-    existing = db.query(AdminUser).filter(AdminUser.username == settings.admin_username).first()
-    if existing:
-        return
-    admin = AdminUser(
-        username=settings.admin_username,
-        password_hash=hash_password(settings.admin_password),
-    )
-    db.add(admin)
-    db.commit()
-    print(f"[startup] Created admin user '{settings.admin_username}' "
-          f"(password from ADMIN_PASSWORD in .env -- change it after first login)")
 
 
 def ensure_image_slots(db: Session):
