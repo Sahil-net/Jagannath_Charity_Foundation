@@ -5,6 +5,8 @@ import { DynamicImage } from "../lib/ImagesContext";
 const links = [
   { href: "/about", label: "Our story" },
   { href: "/work", label: "Our work" },
+  { href: "/projects", label: "Projects" },
+  { href: "/partners", label: "Partners" },
   { href: "/impact", label: "Impact" },
   { href: "/team", label: "People" },
   { href: "/gallery", label: "Gallery" },

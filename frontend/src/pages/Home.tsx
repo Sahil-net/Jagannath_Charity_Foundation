@@ -271,60 +271,60 @@ export default function Home() {
 
       <Reveal as="section" className="home-story">
         <div className="wrap story-layout">
-          <motion.div
-            className="story-photo"
-            initial={
-              reducedMotion ? false : { opacity: 0 }
-            }
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{
-              duration: reducedMotion ? 0 : 1.25,
-              delay: reducedMotion ? 0 : 0.28,
-              ease: [0.22, 0.7, 0.2, 1],
-            }}
-          >
+          <div className="story-portrait">
             <motion.div
-              initial={reducedMotion ? false : { scale: 1.055, clipPath: "inset(14% 0 0)" }}
-              whileInView={{ scale: 1, clipPath: "inset(0% 0 0)" }}
+              className="story-photo"
+              initial={reducedMotion ? false : { opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{
-                duration: reducedMotion ? 0 : 1.8,
-                delay: reducedMotion ? 0 : 0.18,
+                duration: reducedMotion ? 0 : 1.25,
+                delay: reducedMotion ? 0 : 0.28,
                 ease: [0.22, 0.7, 0.2, 1],
               }}
             >
-              <DynamicImage
-                slotKey="about-founder-photo"
-                alt="Dr Jagannath Patnaik, founder of Jagannath Foundation"
-                className="founder-image"
-              />
-            </motion.div>
-            <span className="story-photo-caption">
-              Dr Jagannath Patnaik{" "}
-              <i>Founder, Settlor &amp; Managing Trustee</i>
-            </span>
-            <motion.svg
-              className="founder-photo-frame"
-              aria-hidden="true"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-            >
-              <motion.path
-                d="M50 1 H99 V99 H1 V1 H50"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                vectorEffect="non-scaling-stroke"
-                initial={reducedMotion ? false : { pathLength: 0 }}
-                whileInView={{ pathLength: 1 }}
+              <motion.div
+                initial={reducedMotion ? false : { scale: 1.055, clipPath: "inset(14% 0 0)" }}
+                whileInView={{ scale: 1, clipPath: "inset(0% 0 0)" }}
                 viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: reducedMotion ? 0 : 1.5, delay: reducedMotion ? 0 : 2.05, ease: [0.22, 0.7, 0.2, 1] }}
-              />
-            </motion.svg>
-          </motion.div>
+                transition={{
+                  duration: reducedMotion ? 0 : 1.8,
+                  delay: reducedMotion ? 0 : 0.18,
+                  ease: [0.22, 0.7, 0.2, 1],
+                }}
+              >
+                <DynamicImage
+                  slotKey="about-founder-photo"
+                  alt="Dr Jagannath Patnaik, founder of Jagannath Foundation"
+                  className="founder-image"
+                />
+              </motion.div>
+              <motion.svg
+                className="founder-photo-frame"
+                aria-hidden="true"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+              >
+                <motion.path
+                  d="M50 1 H99 V99 H1 V1 H50"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  vectorEffect="non-scaling-stroke"
+                  initial={reducedMotion ? false : { pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: reducedMotion ? 0 : 1.5, delay: reducedMotion ? 0 : 2.05, ease: [0.22, 0.7, 0.2, 1] }}
+                />
+              </motion.svg>
+            </motion.div>
+            <div className="story-photo-caption">
+              Dr Jagannath Patnaik
+              <i>Founder, Settlor &amp; Managing Trustee</i>
+            </div>
+          </div>
           <div className="story-copy">
             <motion.p className="eyebrow"
               initial={reducedMotion ? false : { opacity: 0, y: 10 }}

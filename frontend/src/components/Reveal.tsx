@@ -10,11 +10,14 @@ type RevealTag = "div" | "section" | "article" | "h3" | "h2" | "aside" | "nav" |
 type RevealProps = HTMLAttributes<any> & {
   as?: RevealTag;
   delay?: number;
+  duration?: number;
+  delayOffset?: number;
+  start?: string;
   href?: string;
   type?: "button" | "submit" | "reset";
 };
 
-export default function Reveal({ as = "div", delay = 0, ...props }: RevealProps) {
+export default function Reveal({ as = "div", delay = 0, duration = 1.6, delayOffset = 0.18, start = "top 86%", ...props }: RevealProps) {
   const scope = useRef<HTMLElement | null>(null);
   const reducedMotion = useReducedMotion();
 
@@ -30,17 +33,17 @@ export default function Reveal({ as = "div", delay = 0, ...props }: RevealProps)
     gsap.fromTo(element, { autoAlpha: 0, y: 24 }, {
       autoAlpha: 1,
       y: 0,
-      duration: 1.6,
-      delay: delay + 0.18,
+      duration,
+      delay: delay + delayOffset,
       ease: "power3.out",
       overwrite: "auto",
       scrollTrigger: {
         trigger: element,
-        start: "top 86%",
+        start,
         once: true,
       },
     });
-  }, { scope, dependencies: [delay, reducedMotion], revertOnUpdate: true });
+  }, { scope, dependencies: [delay, duration, delayOffset, start, reducedMotion], revertOnUpdate: true });
 
   return createElement(as, { ...props, ref: scope });
 }

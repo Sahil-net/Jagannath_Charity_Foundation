@@ -29,12 +29,25 @@ export default function Contact() {
       <PageHero theme="contact" eyebrow="Contact" title="Trust headquarters, Bhubaneswar." description="Programme questions, volunteering, membership and press all come to the same desk. If it is urgent, call. If it can wait, use the form." />
 
       <Reveal as="section" className="wrap py-16 grid lg:grid-cols-2 gap-12">
-        <dl className="space-y-5 text-sm">
-          <div><dt className="text-navy-900/50">Telephone</dt><dd className="font-medium">+91 97006 43333</dd></div>
-          <div><dt className="text-navy-900/50">Email</dt><dd className="font-medium">chairman@jagannathfoundation.charity<br/>secretariatjagannathfoundation@gmail.com</dd></div>
-          <div><dt className="text-navy-900/50">Trust house</dt><dd className="font-medium">Foundation House, Raj Bhavan<br/>Tapaswini Colony, Near Z1, Nandan Kanan Road<br/>Bhubaneswar, Khordha 751024</dd></div>
-          <div><dt className="text-navy-900/50">Web</dt><dd className="font-medium">www.jagannathfoundation.charity</dd></div>
-        </dl>
+        <div className="contact-details-column">
+          <dl className="space-y-5 text-sm">
+            <div><dt className="text-navy-900/50">Telephone</dt><dd className="font-medium"><a href="tel:+919700643333">+91 97006 43333</a></dd></div>
+            <div><dt className="text-navy-900/50">Email</dt><dd className="font-medium"><a href="mailto:chairman@jagannathfoundation.charity">chairman@jagannathfoundation.charity</a><br/><a href="mailto:secretariatjagannathfoundation@gmail.com">secretariatjagannathfoundation@gmail.com</a></dd></div>
+            <div><dt className="text-navy-900/50">Trust house</dt><dd className="font-medium">Foundation House, Raj Bhavan<br/>Tapaswini Colony, Near Z1, Nandan Kanan Road<br/>Bhubaneswar, Khordha 751024</dd></div>
+            <div><dt className="text-navy-900/50">Web</dt><dd className="font-medium">www.jagannathfoundation.charity</dd></div>
+          </dl>
+
+          <aside id="press-media" className="press-media mt-10 scroll-mt-28 border-t border-navy-900/15 pt-7">
+            <p className="text-xs font-semibold uppercase tracking-[.18em] text-orange-600">Press &amp; media</p>
+            <h2 className="mt-2 font-serif-heading text-2xl font-bold text-navy-950">For the press</h2>
+            <p className="mt-3 text-base leading-7 text-navy-900/70">For media queries, interview requests and field visits, contact the secretariat. Please mark your subject line clearly so the right person can respond.</p>
+            <dl className="mt-5 space-y-4 text-sm">
+              <div><dt className="text-navy-900/55">Media desk</dt><dd className="font-semibold"><a href="mailto:secretariatjagannathfoundation@gmail.com">secretariatjagannathfoundation@gmail.com</a></dd></div>
+              <div><dt className="text-navy-900/55">Chairman</dt><dd className="font-semibold"><a href="mailto:chairman@jagannathfoundation.charity">chairman@jagannathfoundation.charity</a><span className="px-2 text-navy-900/35">·</span><a href="tel:+919700643333">+91 97006 43333</a></dd></div>
+            </dl>
+            <p className="mt-5 text-sm leading-6 text-navy-900/65"><span className="font-semibold text-navy-950">Suggested subjects:</span> Media query · Interview request · Field visit</p>
+          </aside>
+        </div>
 
         <form onSubmit={handleSubmit} className="border border-navy-900/10 rounded-xl p-6 space-y-4">
           <h2 className="text-xl font-serif-heading font-bold text-navy-950">Send a message</h2>

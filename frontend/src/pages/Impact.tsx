@@ -33,6 +33,15 @@ export default function Impact() {
           ))}
         </div>
       </Reveal>
+
+      <Reveal as="section" className="wrap pb-16 md:pb-24">
+        <div className="border-t border-navy-900/15 pt-8 md:grid md:grid-cols-[.7fr_1.3fr] md:gap-12">
+          <h2 className="font-serif-heading text-2xl font-bold text-navy-950 sm:text-3xl">A public record should stand up to scrutiny.</h2>
+          <p className="mt-4 text-base leading-7 text-navy-900/70 md:mt-0 md:text-lg">
+            We will not publish invented beneficiary walls, unfinished installation counts, or photographs that outrun the work. When a number is ready to stand a year later, it will be named here.
+          </p>
+        </div>
+      </Reveal>
     </Layout>
   );
 }

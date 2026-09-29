@@ -74,6 +74,22 @@ export default function About() {
         description={siteContent.about_intro?.value || "Jagannath Foundation was created on 17 August 2026. It is irrevocable. Its income and property can be applied only to the objects of the trust. There is no private profit."}
       />
 
+      <Reveal as="section" className="wrap py-12">
+        <div className="max-w-4xl">
+          <h2 className="text-3xl font-serif-heading font-bold text-navy-950 mb-3">Statutory registrations</h2>
+          <p className="text-sm text-navy-900/70 mb-6">
+            The Foundation is a public charitable trust, recorded on NITI Aayog DARPAN, provisionally registered for tax exemption, and approved by the Ministry of Corporate Affairs to undertake CSR activities.
+          </p>
+          <dl className="grid sm:grid-cols-[minmax(12rem,1fr)_2fr] gap-x-6 gap-y-3 text-sm border border-navy-900/10 rounded-xl p-5">
+            <dt className="text-navy-900/60">PAN</dt><dd className="font-medium text-navy-950">AAFTJ8006Q</dd>
+            <dt className="text-navy-900/60">DARPAN (NITI Aayog)</dt><dd className="font-medium text-navy-950">OR/2026/1196699 · registered 02-09-2026</dd>
+            <dt className="text-navy-900/60">Provisional registration u/s 12A</dt><dd className="font-medium text-navy-950">URN AAFTJ8006QE20261</dd>
+            <dt className="text-navy-900/60">Provisional approval u/s 80G</dt><dd className="font-medium text-navy-950">URN AAFTJ8006QF20261 · Form 10G dated 07-09-2026 · valid TY 2026-27 to TY 2028-29</dd>
+            <dt className="text-navy-900/60">MCA CSR registration</dt><dd className="font-medium text-navy-950">CSR00118119 · Form CSR-1 dated 21-09-2026 · SRN AC6085516 · ROC Delhi</dd>
+          </dl>
+        </div>
+      </Reveal>
+
       <Reveal as="section" className="about-content wrap py-16 grid lg:grid-cols-[2fr_1fr] gap-10">
         <div className="about-information">
           <div className="about-tabs flex flex-wrap gap-2 mb-6" role="tablist" aria-label="About the Foundation">
