@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
-import { apiUrl, API_URL, clearToken, deleteSubmission, fetchContent, fetchSubmissions, FormSubmission, getToken, replaceImage, SiteContent, updateContent } from "../../lib/api";
+import { API_URL, deleteSubmission, fetchContent, fetchSession, fetchSubmissions, FormSubmission, logout as apiLogout, replaceImage, SiteContent, updateContent } from "../../lib/api";
 import { useImages } from "../../lib/ImagesContext";
 import Reveal from "../../components/Reveal";
 
@@ -21,22 +21,18 @@ export default function AdminDashboard() {
   const fileInputs = useRef<Record<string, HTMLInputElement | null>>({});
 
   useEffect(() => {
-    const token = getToken();
-    if (!token) { navigate("/admin/login"); return; }
-    Promise.all([
-      fetch(apiUrl("/api/auth/me"), { headers: { Authorization: `Bearer ${token}` } }),
-      fetchContent(),
-      fetchSubmissions(),
-    ]).then(async ([auth, text, inbox]) => {
-      if (!auth.ok) throw new Error("Session expired");
-      setContent(text);
-      setSubmissions(inbox);
-      setDrafts(Object.fromEntries(Object.entries(text).map(([key, field]) => [key, field.value])));
-      setCheckingAuth(false);
-    }).catch(() => { clearToken(); navigate("/admin/login"); });
+    fetchSession()
+      .then(() => Promise.all([fetchContent(), fetchSubmissions()]))
+      .then(([text, inbox]) => {
+        setContent(text);
+        setSubmissions(inbox);
+        setDrafts(Object.fromEntries(Object.entries(text).map(([key, field]) => [key, field.value])));
+        setCheckingAuth(false);
+      })
+      .catch(() => { navigate("/admin/login"); });
   }, [navigate]);
 
-  function logout() { clearToken(); navigate("/admin/login"); }
+  function logout() { apiLogout().finally(() => navigate("/admin/login")); }
 
   async function upload(slotKey: string, file?: File) {
     if (!file) return;
